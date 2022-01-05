@@ -3,7 +3,7 @@ const models = require('../models');
 const create = async (req, res) => {
   try {
     const {name, description, userId, type} = req.body;
-console.log({name, description, userId, type})
+
     //validaciones
     const user = await models.user.findById(userId);
     if (!user) {
