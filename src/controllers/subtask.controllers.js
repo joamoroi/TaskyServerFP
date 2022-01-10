@@ -3,7 +3,7 @@ const models = require('../models');
 const create = async (req, res) => {
   try {
     const {name, description, taskId, type} = req.body;
-    console.log({name, description, taskId, type})
+    
     //validaciones
     const task = await models.task.findById(taskId);
     if (!task) {
@@ -25,7 +25,7 @@ const create = async (req, res) => {
     task.subtask.push(subtask)
     await task.save()
 
-    return res.status(201).json({subtask});
+    return res.status(201).json({subtask, task});
   } catch (err) {
     return res.json({err: err.message});
   }

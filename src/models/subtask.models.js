@@ -13,11 +13,6 @@ const subtaskSchema = new Schema(
     date: {
       type: String,
     },
-    // taskId: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'Task',
-    //   required: true,
-    // },
     type: {
       type: String,
     },
