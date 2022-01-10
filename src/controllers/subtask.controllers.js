@@ -2,12 +2,12 @@ const models = require('../models');
 
 const create = async (req, res) => {
   try {
-    const {name, description, userId, type} = req.body;
-
+    const {name, description, taskId, type} = req.body;
+    console.log({name, description, taskId, type})
     //validaciones
-    const user = await models.user.findById(userId);
-    if (!user) {
-      return res.status(409).json({error: 'El usuario no existe'});
+    const task = await models.task.findById(taskId);
+    if (!task) {
+      return res.status(409).json({error: 'La tarea no existe'});
     }
 
     if (!name || !description) {
@@ -18,11 +18,14 @@ const create = async (req, res) => {
     const subtask = await models.subtask.create({
       name,
       description,
-      userId,
+      // taskId,
       type,
     });
 
-    return res.status(201).json({subtask, userId});
+    task.subtask.push(subtask)
+    await task.save()
+
+    return res.status(201).json({subtask});
   } catch (err) {
     return res.json({err: err.message});
   }
@@ -30,6 +33,7 @@ const create = async (req, res) => {
 
 const usersubtasks = async (req, res) => {
   try {
+    
     const usersubtasks = await models.subtask.find();
     if (!usersubtasks) {
       return res.status(409).json({error: 'No hay subtareas para mostrar'});
