@@ -33,13 +33,13 @@ const create = async (req, res) => {
 
 const usersubtasks = async (req, res) => {
   try {
-    
-    const usersubtasks = await models.subtask.find();
-    if (!usersubtasks) {
-      return res.status(409).json({error: 'No hay subtareas para mostrar'});
+    const {taskId} = req.body;
+    const usertasks = await models.task.findById(taskId).populate('subtask');
+    if (!usertasks) {
+      return res.status(409).json({error: 'No hay tareas para mostrar'});
     }
 
-    return res.status(201).json({usersubtasks});
+    return res.status(201).json({usersubtasks: usertasks.subtask });
   } catch (err) {
     return res.status(409).json({error: 'No se pudo mostrar las subtareas'});
   }

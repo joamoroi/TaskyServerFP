@@ -42,7 +42,6 @@ const create = async (req, res) => {
     });
 
     return res.status(201).json({task, userId});
-    
   } catch (err) {
     return res.json({err: err.message});
   }
@@ -51,9 +50,9 @@ const create = async (req, res) => {
 const usertasks = async (req, res) => {
   try {
     const {userId} = req.body;
-   
+
     const usertasks = await models.task.find({userId}).populate('subtask');
-    
+
     if (!usertasks) {
       return res.status(409).json({error: 'No hay tareas para mostrar'});
     }
@@ -73,7 +72,7 @@ const onetask = async (req, res) => {
       return res.status(409).json({error: 'No se pudo encontrar la tarea'});
     }
 
-    return res.status(201).json({onetask});
+    return res.status(201).json({onetask, onetaskId: onetask._id});
   } catch (err) {
     return res.status(409).json({error: 'No se pudo encontrar la tarea'});
   }
@@ -83,7 +82,7 @@ const update = async (req, res) => {
   try {
     const {id} = req.params;
 
-    const {name, type, userId} = req.body;
+    const {name, userId} = req.body;
 
     const file = req.file;
 
@@ -100,9 +99,8 @@ const update = async (req, res) => {
 
     //actualizar datos tarea
     task.name = name;
-    (task.image =
-      config.server.hostname + values.imageFolder + '/' + file.filename),
-      (task.type = type);
+    task.image =
+      config.server.hostname + values.imageFolder + '/' + file.filename;
     task.userId = userId;
 
     await task.save();
