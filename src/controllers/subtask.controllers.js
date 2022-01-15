@@ -60,8 +60,31 @@ const onesubtask = async (req, res) => {
     return res.status(409).json({error: 'No se pudo encontrar la tarea'});
   }
 };
-const update = (req, res) => {
-  return res.json('update');
+const update = async (req, res) => {
+
+  try {
+  const {id} = req.params;
+  console.log({id})
+
+  const {name, description} = req.body;
+  console.log({name, description})
+
+  const subtask = await models.subtask.findById(id);
+  console.log({subtask})
+  if (!subtask) {
+    return res.status(409).json({error: 'No se pudo encontrar la subtarea'});
+  }
+
+  //actualizar datos tarea
+  subtask.name = name;
+  subtask.description = description;
+
+  await subtask.save();
+
+  return res.status(201).json({subtask});
+} catch (err) {
+  return res.status(409).json({error: 'No se actualizó la subtarea'});
+}
 };
 
 const remove = async (req, res) => {
