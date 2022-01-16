@@ -33,7 +33,11 @@ const create = async (req, res) => {
 
 const usersubtasks = async (req, res) => {
   try {
-    const {taskId} = req.body;
+    const {taskId, userId} = req.body;
+    const user = await models.user.findById(userId)
+    if (!user) {
+      return res.status(409).json({error: 'No existe el usuario'});
+    }
     const usertasks = await models.task.findById(taskId).populate('subtask');
     if (!usertasks) {
       return res.status(409).json({error: 'No hay tareas para mostrar'});
@@ -56,6 +60,7 @@ const onesubtask = async (req, res) => {
     }
 
     return res.status(201).json({onesubtask});
+    
   } catch (err) {
     return res.status(409).json({error: 'No se pudo encontrar la tarea'});
   }
@@ -64,11 +69,9 @@ const update = async (req, res) => {
 
   try {
   const {id} = req.params;
-  console.log({id})
-
+  
   const {name, description} = req.body;
-  console.log({name, description})
-
+  
   const subtask = await models.subtask.findById(id);
   console.log({subtask})
   if (!subtask) {
@@ -80,6 +83,7 @@ const update = async (req, res) => {
   subtask.description = description;
 
   await subtask.save();
+  
 
   return res.status(201).json({subtask});
 } catch (err) {
