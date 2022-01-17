@@ -70,7 +70,7 @@ const update = async (req, res) => {
   try {
   const {id} = req.params;
   
-  const {name, description} = req.body;
+  const {name, description, type} = req.body;
   
   const subtask = await models.subtask.findById(id);
   console.log({subtask})
@@ -81,6 +81,7 @@ const update = async (req, res) => {
   //actualizar datos tarea
   subtask.name = name;
   subtask.description = description;
+  subtask.type = type;
 
   await subtask.save();
   
