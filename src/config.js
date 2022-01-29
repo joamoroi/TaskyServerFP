@@ -7,8 +7,8 @@ const config = {
     host: "smtp.ethereal.email",
     port: 587,
     auth: {
-      user: "karley.hyatt5@ethereal.email",
-      pass: "BpzsXKMFHpccQF2pC9",
+      user: "tanya.rutherford23@ethereal.email",
+      pass: "x8Ydbs5KwtHQ4j5JfM",
     },
   },
   

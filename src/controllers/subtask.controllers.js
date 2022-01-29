@@ -25,6 +25,8 @@ const create = async (req, res) => {
     task.subtask.push(subtask)
     await task.save()
 
+    console.log({subtask})
+
     return res.status(201).json({subtask, task});
   } catch (err) {
     return res.json({err: err.message});
@@ -109,10 +111,28 @@ const remove = async (req, res) => {
   }
 };
 
+const subtaskExpiration = async (req, res) => {
+  try {
+    const {date} = req.body;
+
+    const subtask = await models.subtask.findById(subtaskId);
+    if (!subtask) {
+      return res.status(409).json({error: 'La subtarea no existe'});
+    }
+
+  
+
+    return res.status(201).json({dat});
+  } catch (err) {
+    res.json({err: err.message});
+  }
+};
+
 module.exports = {
   create,
   usersubtasks,
   onesubtask,
   update,
   remove,
+  subtaskExpiration,
 };
