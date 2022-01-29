@@ -2,7 +2,7 @@ const models = require('../models');
 
 const create = async (req, res) => {
   try {
-    const {name, description, taskId, type} = req.body;
+    const {name, description, taskId, type, date} = req.body;
     
     //validaciones
     const task = await models.task.findById(taskId);
@@ -20,6 +20,7 @@ const create = async (req, res) => {
       description,
       // taskId,
       type,
+      date,
     });
 
     task.subtask.push(subtask)
@@ -72,7 +73,8 @@ const update = async (req, res) => {
   try {
   const {id} = req.params;
   
-  const {name, description, type} = req.body;
+  const {name, description, type, date} = req.body;
+  console.log({name, description, type, date})
   
   const subtask = await models.subtask.findById(id);
   console.log({subtask})
@@ -84,6 +86,7 @@ const update = async (req, res) => {
   subtask.name = name;
   subtask.description = description;
   subtask.type = type;
+  subtask.date = date;
 
   await subtask.save();
   
